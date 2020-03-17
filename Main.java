@@ -45,13 +45,11 @@ public class Main implements TestData{
 		waitVar.until(ExpectedConditions.titleContains("latitude"));
 		WebElement clicker=driver.findElement(By.linkText("Israel"));
 		clicker.click();
-		waitVar.until(ExpectedConditions.urlContains("Israel"));
-		waitVar.wait(3000);
-		clicker=driver.findElement(By.cssSelector("[href='jerusalem']"));
-		clicker.click();    //why not working?
-		//waitVar.wait(3000);
+		waitVar.until(ExpectedConditions.urlContains("https://latitudelongitude.org/il"));
+		clicker=driver.findElement(By.linkText("Jerusalem"));
+		clicker.click();    
 		//waitVar.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[style='white-space: nowrap; border:1px solid #e85151; padding:4px;']")));
-		waitVar.until(ExpectedConditions.titleContains("Jerusalem"));
+		waitVar.until(ExpectedConditions.urlContains("https://latitudelongitude.org/il/jerusalem"));
 		WebElement lat=driver.findElement(By.cssSelector("[style='white-space: nowrap; border:1px solid #e85151; padding:4px;']"));
 		System.out.println(lat.getText());      //check for self
 		waitVar.until(ExpectedConditions.titleContains("Jerusalem"));
@@ -59,12 +57,12 @@ public class Main implements TestData{
 		System.out.println(latList.get(2));     //check for self
 		
         
-		latitudeToString(getLatitudeDiff(latList,URLList, most),most,URLList,latList);
-		waitVar.wait(3000);
+		getLatitudeDiff(latList,URLList, most);
+		
 		driver.close();
 	}
 	
-	public static int getLatitudeDiff(List<String>latList,List<String>URLList,String most) {
+	public static void getLatitudeDiff(List<String>latList,List<String>URLList,String most) {
 		// TODO Auto-generated method stub
 		int diff=0; int max=0; 
 		
@@ -73,7 +71,20 @@ public class Main implements TestData{
 			latInt.add(Integer.parseInt((latList.get(i))));		//casting into int list
 			if(latInt.get(i)>max) {
 				max=latInt.get(i);
-				most=URLList.get(i).substring(3);
+				switch(i) {
+				case 1:
+					most="Tiberias";
+					break;
+				case 2:
+					most="Haifa";
+					break;
+				case 3:
+					most="Jerusalem";
+					break;
+				default:
+					most="error";
+				}
+				
 			}
 			}
 		Collections.sort(latInt);           //sorting list in ascending order to get diff
@@ -86,12 +97,13 @@ public class Main implements TestData{
 		}
 		else {System.out.println("Error in format");}
 		
-		return diff;
+		latitudeToString(diff,most,URLList,latList);
+		
 	}
 	public static void latitudeToString(int diffrence,String most,List<String>URLList,List<String>latList) {
 		// TODO Auto-generated method stub
 		for(int i=0;i<URLList.size();i++) {
-		   System.out.println(String.format("The city % is in the latitude of %s degrees",URLList.get(i).substring(3)
+		   System.out.println(String.format("The city %s is in the latitude of %s degrees",URLList.get(i).substring(URLList.get(i).lastIndexOf('/')+1)
 				   ,latList.get(i)));
 		}	   
 		System.out.println(String.format("The most northern city is %s by the diffrence of %s from the closest city",
