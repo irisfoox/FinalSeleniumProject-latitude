@@ -48,7 +48,7 @@ public class Main implements TestData{
 		waitVar.until(ExpectedConditions.urlContains("https://latitudelongitude.org/il"));
 		clicker=driver.findElement(By.linkText("Jerusalem"));
 		clicker.click();    
-		//waitVar.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[style='white-space: nowrap; border:1px solid #e85151; padding:4px;']")));
+		
 		waitVar.until(ExpectedConditions.urlContains("https://latitudelongitude.org/il/jerusalem"));
 		WebElement lat=driver.findElement(By.cssSelector("[style='white-space: nowrap; border:1px solid #e85151; padding:4px;']"));
 		System.out.println(lat.getText());      //check for self
@@ -56,8 +56,7 @@ public class Main implements TestData{
 		latList.add(String.format("%s%s",lat.getText().charAt(0),lat.getText().charAt(1)));
 		System.out.println(latList.get(2));     //check for self
 		
-        
-		getLatitudeDiff(latList,URLList, most);
+       		getLatitudeDiff(latList,URLList, most);
 		
 		driver.close();
 	}
